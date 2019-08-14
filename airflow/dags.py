@@ -21,11 +21,18 @@ DAG = af_models.DAG(
     schedule_interval= '0 10 * * *')
 )
 
+datafeed = PythonOperator(
+    task_id='data_feed',
+    provide_context=True,
+    python_callable=datascript.py,
+    dag=my_dag,
+)
+
 send_email = EmailOperator(
     task_id='send_email',
     to='pmotwani575@gmail.com',
     subject='task airflow complete',
     html_content="Date: {{ ds }}",
-    dag=dag)
+    dag=my_dag)
 
 )

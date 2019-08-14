@@ -1,6 +1,3 @@
-mysql -u root -p
-
-
 CREATE DATABASE  IF NOT EXISTS `bitcoin` DEFAULT VARCHARSET=utf8;USE `bitcoin`;--
 CREATE TABLE bitcoin (
       ID int  NOT NULL AUTO_INCREMENT,
@@ -15,7 +12,3 @@ CREATE TABLE bitcoin (
      `Ask Price` FLOAT,
      PRIMARY KEY (ID)
 );
-
-
-
-docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=password -d mysql

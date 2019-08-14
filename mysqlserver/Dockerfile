@@ -1,13 +1,17 @@
 FROM debian:stretch-slim
 
-# add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
+
+# below command install our myql server ###
+
 RUN groupadd -r mysqlserver && useradd -r -g mysqlserver mysqlserver
+
+## below intall all the dependencies on mysql container as we need to run the python code to make my SQL connections so we require all below PIP libraries##
 
 RUN apt-get update && apt-get install -y --no-install-recommends gnupg dirmngr && rm -rf /var/lib/apt/lists/*
 RUN apt-get update && apt-get install -y python-pip && pip install PyMySQL
 
 RUN apt-get update
-	RUN pip install mysql-connector-python
+RUN pip install mysql-connector-python
 RUN pip install pymysql
 RUN pip install requests
 
@@ -81,6 +85,5 @@ COPY config/ /etc/mysql/
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN ln -s usr/local/bin/docker-entrypoint.sh /entrypoint.sh # backwards compat
 ENTRYPOINT ["docker-entrypoint.sh"]
-
 EXPOSE 3306 33060
 CMD ["mysqld"]
