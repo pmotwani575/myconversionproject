@@ -1,0 +1,716 @@
+resource:
+
+  aws_route_table:
+
+    rt-public:
+      vpc_id: ${aws_vpc.vpc.id}
+      depends_on:
+      - aws_internet_gateway.igw
+      tags:
+        Name: route_table-public
+        vpc: ${var.vpc-name}
+      route:
+
+      - #comment: default route
+        cidr_block: 0.0.0.0/0
+        gateway_id: ${aws_internet_gateway.igw.id}
+
+      - #comment: PAN Outbound Access Routes
+        cidr_block: 0.0.0.0/2
+        gateway_id: ${aws_internet_gateway.igw.id}
+
+      - #comment: PAN Outbound Access Routes
+        cidr_block: 64.0.0.0/2
+        gateway_id: ${aws_internet_gateway.igw.id}
+
+      - #comment: PAN Outbound Access Routes
+        cidr_block: 128.0.0.0/2
+        gateway_id: ${aws_internet_gateway.igw.id}
+
+      - #comment: PAN Outbound Access Routes
+        cidr_block: 192.0.0.0/2
+        gateway_id: ${aws_internet_gateway.igw.id}
+
+      - #comment: for RFC 1918 private network 10.0.0.0/8
+        cidr_block: 10.0.0.0/8
+        gateway_id: ${aws_vpn_gateway.vpg.id}
+      - cidr_block: 10.16.0.0/16
+        gateway_id: ${aws_vpn_gateway.vpg.id}
+
+      - #comment: for RFC 1918 private network 172.16.0.0/12
+        cidr_block: 172.16.0.0/12
+        gateway_id: ${aws_vpn_gateway.vpg.id}
+
+      - #comment: Route-Table entry for traffic to/from the "cvent-production" vpc via the vpc peering connection
+        cidr_block: 172.23.0.0/17
+        vpc_peering_connection_id: pcx-c67c30af
+
+      - #comment: Route-Table entry for traffic to/from the "conference-production" vpc in us-west-2 via the vpc peering connection
+        cidr_block: 172.29.192.0/22
+        vpc_peering_connection_id: pcx-307e7159
+
+      - #comment: Route-Table entry for traffic to/from the cvent-management-useast1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.24.0.0/18
+        vpc_peering_connection_id: pcx-02a3f81b92d4eb8aa
+
+      - #comment: Route-Table entry for traffic to/from the cvent-development-useast1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.24.128.0/17
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_cvent-development-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the cvent-sandbox-useast1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.29.0.0/17
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_cvent-sandbox-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the cvent-production-useast1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.25.0.0/17
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_cvent-production-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the cvent-integration-useast1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.24.64.0/18
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_cvent-integration-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the cvent-production-legacy-useast1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.31.0.0/17
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_cvent-production-legacy-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the corpsys-development-useast1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.29.128.0/23
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_corpsys-development-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the corpsys-production-useast1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.31.128.0/17
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_corpsys-production-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the conference-development-useast1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.29.132.0/22
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_conference-development-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the conference-production-useast1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.29.136.0/22
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_conference-production-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the emi-development-useast1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.30.2.0/23
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_emi-development-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the emi-production-useast1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.30.0.0/23
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_emi-production-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the sandbox-infrastructure-useast1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.29.130.0/24
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_sandbox-infrastructure-test-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the crowdcompass CC-Admin-West us-west-2 vpc over the inter-region vpc peering connection
+        cidr_block: 172.30.28.0/22
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_crowdcompass-CC-Admin-West-uswest2.id}
+
+      - #comment: Route-Table entry for traffic to/from the crowdcompass CCWest Prod/Hotfix us-west-2 vpc over the inter-region vpc peering connection
+        cidr_block: 172.30.8.0/22
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_crowdcompass-CCWestProd-Hotfix-uswest2.id}
+
+      - #comment: Route-Table entry for traffic to/from the lanyon-infrastructurecore preprod-core-services us-east-1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.26.192.0/20
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_lanyon-preprod-core-services-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the lanyon-infrastructurecore prod-core-services us-east-1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.26.16.0/20
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_lanyon-prod-core-services-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the lanyon-infrastructurecore infrastructurecorevpc-uswest us-west-2 vpc over the inter-region vpc peering connection
+        cidr_block: 172.28.16.0/20
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_lanyon-infrastructurecorevpc-uswest-uswest2.id}
+
+      - #comment: Route-Table entry for traffic to/from the lanyonprodebs us-east-1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.26.64.0/22
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_lanyonprodebs-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the lanyonprodebs us-west-2 vpc over the inter-region vpc peering connection
+        cidr_block: 172.31.0.0/16
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_lanyonprodebs-uswest2.id}
+
+      - #comment: Route-Table entry for traffic to/from the rol-preprod us-east-1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.26.96.0/20
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_lanyon-rol-preprod-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the lanyon rol-prod us-east-1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.26.80.0/21
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_lanyon-rol-prod-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the lanyon rol-prod us-west-2 vpc over the inter-region vpc peering connection
+        cidr_block: 172.28.80.0/21
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_lanyon-rol-prod-uswest2.id}
+
+      - #comment: Route-Table entry for traffic to/from the lanyon-corp-it us-east-1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.26.8.0/21
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_lanyon-corp-it-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the lanyon-conferencedr us-west-2 vpc over the inter-region vpc peering connection
+        cidr_block: 172.28.64.0/21
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_lanyon-conferencedr-uswest2.id}
+
+      - #comment: Route-Table entry for traffic to/from the lanyonmobile devopstest us-east-1 vpc over the inter-region vpc peering connection
+        cidr_block: 10.0.0.0/16
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_lanyonmobile-devopstest-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the lanyonmobile mobile-preprod-useast us-east-1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.26.52.0/22
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_lanyonmobile-mobile-preprod-useast-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the lanyonmobile mobile-prod-useast us-east-1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.26.48.0/22
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_lanyonmobile-mobile-prod-useast-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the lanyonmobile mobile-prod-usoregon us-west-2 vpc over the inter-region vpc peering connection
+        cidr_block: 172.28.48.0/22
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_lanyonmobile-mobile-prod-usoregon-uswest2.id}
+
+      - #comment: Route-Table entry for traffic to/from the lanyonmobile mobile-preprod-usoregon us-west-2 vpc over the inter-region vpc peering connection
+        cidr_block: 172.28.52.0/22
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_lanyonmobile-mobile-preprod-usoregon-uswest2.id}
+
+      - #comment: Route-Table entry for traffic to/from the lanyonmobile mobile-legacy us-west-2 vpc over the inter-region vpc peering connection
+        cidr_block: 172.30.0.0/16
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_lanyonmobile-mobile-legacy-uswest2.id}
+
+      - #comment: Route-Table entry for traffic to/from the lanyon-passkey group-corporate us-east-1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.25.0.0/16
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_lanyon-passkey-group-corporate-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the lanyon-passkey ebs-preprod us-east-1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.26.32.0/22
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_lanyon-passkey-ebs-preprod-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the lanyon-passkey prod-dr us-west-2 vpc over the inter-region vpc peering connection
+        cidr_block: 172.27.0.0/16
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_lanyon-passkey-prod-dr-uswest2.id}
+
+      - #comment: Route-Table entry for traffic to/from the cvent-sandbox us-west-2 vpc over the inter-region vpc peering connection
+        cidr_block: 172.23.192.0/20
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_cvent-sandbox-uswest2.id}
+
+      - #comment: Route-Table entry for traffic to/from the core-cb-prod vpc over the inter-region vpc peering connection
+        cidr_block: 172.18.34.0/24
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_core-cb-prod-euwest1.id}
+
+      - #comment: Route-Table entry for traffic to/from the core-app-prod vpc in uw-west-1 over the inter-region vpc peering connection
+        cidr_block: 172.18.0.0/19
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_core-app-prod-euwest1.id}
+
+      - #comment: temp peering connection with the poc networking vpc for testing transit VPC
+        cidr_block: 172.29.160.0/23
+        vpc_peering_connection_id: pcx-0f960334aafc6457d
+
+      - #comment: temp peering connection with the core-obd2-dev account for reancloud testing
+        cidr_block: 172.29.164.0/23
+        vpc_peering_connection_id: pcx-094c4265665cb2d6d
+
+      - #comment: Route-Table entry for traffic to/from the core-app-prod vpc in eu-central-1 over the inter-region vpc peering connection
+        cidr_block: 172.19.0.0/19
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_core-app-prod-eucentral1.id}
+
+      - #comment: Route-Table entry for traffic to/from the core-tst-prod vpc in eu-west-1 over the inter-region vpc peering connection
+        cidr_block: 172.18.44.0/23
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_core-tst-prod-euwest1.id}
+
+      - #comment: Route-Table entry for traffic to/from the core-tst-prod vpc in eu-central-1 over the inter-region vpc peering connection
+        cidr_block: 172.19.44.0/23
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_core-tst-prod-eucentral1.id}
+
+      - #comment: Route table entry for traffic to/from the core-reinforc-prod vpc in us-east-1.
+        cidr_block: 172.29.180.0/22
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_core-reinforce-prod-useast1.id}
+
+      - #comment: Route table entry for traffic to/from the core-reinforc-prod vpc in us-west-2.
+        cidr_block: 172.29.196.0/22
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_core-reinforce-prod-uswest2.id}
+
+      - #comment: Route table entry for traffic to/from the core-reinforc-dev vpc in us-east-1.
+        cidr_block: 172.29.176.0/22
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_core-reinforce-dev-useast1.id}
+
+      - #comment: Route Table Entry for traffic to/from the corp-entsrv-prod us-east-1 vpc over the inter-region peering connection
+        cidr_block: 10.160.0.0/18
+        vpc_peering_connection_id: pcx-055db6d709776621c
+
+      - #comment: Route Table Entry for traffic to/from the corp-entsrv-prod us-west-2 vpc over the inter-region peering connection
+        cidr_block: 10.160.64.0/18
+        vpc_peering_connection_id: pcx-006e3cf3ef9eda225
+
+      - #comment: Route table entry for traffic to/from the core-cb-prod vpc in eu-central-1.
+        cidr_block: 172.19.34.0/24
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_core-cb-prod-eucentral1.id}
+
+      - #comment: Route table entry for traffic to/from the core-rmq-prod vpc in eu-central-1.
+        cidr_block: 172.19.38.0/24
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_core-rmq-prod-eucentral1.id}
+
+      - #comment: Route table entry for traffic to/from the core-cdt-prod vpc in eu-central-1.
+        cidr_block: 172.19.56.0/22
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_core-cdt-prod-eucentral1.id}
+
+      - #comment: Route table entry for traffic to/from the core-dbu-prod vpc in eu-central-1.
+        cidr_block: 172.19.33.128/25
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_core-dbu-prod-eucentral1.id}
+
+      - #comment: Route table entry for traffic to/from the core-els-prod vpc in eu-central-1.
+        cidr_block: 172.19.36.0/24
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_core-els-prod-eucentral1.id}
+
+      - #comment: Route table entry for traffic to/from the core-fnd-prod vpc in eu-central-1.
+        cidr_block: 172.19.40.0/23
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_core-fnd-prod-eucentral1.id}
+
+      - #comment: Route table entry for traffic to/from the core-sec-prod vpc in eu-central-1.
+        cidr_block: 172.19.42.0/24
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_core-sec-prod-eucentral1.id}
+
+      - #comment: Route table entry for traffic to/from the eu-ecommerce-prod vpc in eu-central-1.
+        cidr_block: 172.19.48.0/22
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_eu-ecommerce-prod-eucentral1.id}
+
+      - #comment: Route table entry for traffic to/from the core-tst-prod vpc in us-east-1.
+        cidr_block: 172.29.184.0/23
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_core-tst-prod-useast1.id}
+
+      - #comment: Route Table Entry for traffic to/from the core-kapow-dev us-east-1 vpc
+        cidr_block: 10.64.8.0/21
+        vpc_peering_connection_id: pcx-04d54ab322117d022
+
+      - #comment: Route Table Entry for traffic to/from the core-bt-dev us-east-1 vpc
+        cidr_block: 10.64.16.0/21
+        vpc_peering_connection_id: pcx-079945734fc94dc1a
+
+      - #comment: Route Table Entry for traffic to/from the core-cventorg-management vpc in useast1
+        cidr_block: 10.99.159.0/24
+        vpc_peering_connection_id: pcx-0952a59dcddb091c3
+
+      - #comment: Route Table Entry for traffic to/from the core-passkey-dev vpc in useast1
+        cidr_block: 10.64.24.0/21
+        vpc_peering_connection_id: pcx-019585c1b8d08a448
+
+      - #comment: Route Table Entry for traffic to/from the core-passkey-load vpc in useast1
+        cidr_block: 10.72.0.0/21
+        vpc_peering_connection_id: pcx-0c878fb9eaa4c1957
+
+      - #comment: Route Table Entry for traffic to/from core-tst-prod-uswest2
+        cidr_block: 10.103.184.0/23
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_core-tst-prod-uswest2.id}
+
+      - #comment: Route Table Entry for traffic to/from the core-kapow-prod vpc in us-east-1
+        cidr_block: 10.96.8.0/21
+        vpc_peering_connection_id: pcx-06302508c57d16a40
+
+      - #comment: Route Table Entry for traffic to/from the core-kapow-prod vpc in us-west-2
+        cidr_block: 10.100.8.0/21
+        vpc_peering_connection_id: pcx-00647078d285f654f
+
+      - #comment: Route Table Entry for traffic to/from the core-conference-dev vpc in us-east-1
+        cidr_block: 10.64.32.0/21
+        vpc_peering_connection_id: pcx-0cae35793440a8d31
+
+      - #comment: Route Table Entry for traffic to/from the core-socialtables-prod vpc in us-east-1
+        cidr_block: 10.96.16.0/21
+        vpc_peering_connection_id: pcx-088b7fd8bd142a978
+
+      - #comment: Route Table Entry for traffic to/from the core-socialtables-prod vpc in us-west-2
+        cidr_block: 10.100.16.0/21
+        vpc_peering_connection_id: pcx-01a10563da0096dfc
+
+      - #comment: Route Table Entry for traffic to/from the cc-qa51 vpc in us-west-2
+        cidr_block: 172.30.24.0/22
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_cc-qa51-uswest2.id}
+
+      - #comment: public peering route for core-weddingspot-dev us-east-1
+        cidr_block: 10.64.40.0/21
+        vpc_peering_connection_id: pcx-048b02cdca4d13fe4
+
+      - #comment: public peering route for core-weddingspot-prod us-east-1
+        cidr_block: 10.96.24.0/21
+        vpc_peering_connection_id: pcx-044cd282cdcc7d972
+
+      - #comment: public peering route for core-weddingspot-prod us-west-2
+        cidr_block: 10.100.24.0/21
+        vpc_peering_connection_id: pcx-09de58ea11f023aaf
+
+      - #comment: public peering route for core-socialtables-dev us-east-1
+        cidr_block: 10.64.48.0/21
+        vpc_peering_connection_id: pcx-03d805eb92f9a077e
+
+    rt-private:
+      count: ${var.az-count}
+      vpc_id: ${aws_vpc.vpc.id}
+      depends_on:
+      - aws_nat_gateway.nat-gw
+      tags:
+        Name: route_table-private-${lookup(var.az, count.index)}
+        vpc: ${var.vpc-name}
+      route:
+      - cidr_block: 0.0.0.0/0
+        nat_gateway_id: ${element(aws_nat_gateway.nat-gw.*.id,count.index)}
+
+      - #comment: for RFC 1918 private network 10.0.0.0/8
+        cidr_block: 10.0.0.0/8
+        gateway_id: ${aws_vpn_gateway.vpg.id}
+      - cidr_block: 10.16.0.0/16
+        gateway_id: ${aws_vpn_gateway.vpg.id}
+
+      - #comment: for RFC 1918 private network 172.16.0.0/12
+        cidr_block: 172.16.0.0/12
+        gateway_id: ${aws_vpn_gateway.vpg.id}
+
+      - #comment: Route-Table entry for traffic to/from the "cvent-production" vpc via the vpc peering connection
+        cidr_block: 172.23.0.0/17
+        vpc_peering_connection_id: pcx-c67c30af
+
+      - #comment: Route-Table entry for traffic to/from the "conference-production" vpc in us-west-2 via the vpc peering connection
+        cidr_block: 172.29.192.0/22
+        vpc_peering_connection_id: pcx-307e7159
+
+      - #comment: Route-Table entry for traffic to/from the cvent-management-useast1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.24.0.0/18
+        vpc_peering_connection_id: pcx-02a3f81b92d4eb8aa
+
+      - #comment: Route-Table entry for traffic to/from the cvent-development-useast1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.24.128.0/17
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_cvent-development-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the cvent-sandbox-useast1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.29.0.0/17
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_cvent-sandbox-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the cvent-production-useast1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.25.0.0/17
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_cvent-production-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the cvent-integration-useast1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.24.64.0/18
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_cvent-integration-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the cvent-production-legacy-useast1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.31.0.0/17
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_cvent-production-legacy-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the corpsys-development-useast1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.29.128.0/23
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_corpsys-development-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the corpsys-production-useast1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.31.128.0/17
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_corpsys-production-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the conference-development-useast1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.29.132.0/22
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_conference-development-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the conference-production-useast1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.29.136.0/22
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_conference-production-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the emi-development-useast1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.30.2.0/23
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_emi-development-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the emi-production-useast1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.30.0.0/23
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_emi-production-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the sandbox-infrastructure-useast1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.29.130.0/24
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_sandbox-infrastructure-test-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the crowdcompass CC-Admin-West us-west-2 vpc over the inter-region vpc peering connection
+        cidr_block: 172.30.28.0/22
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_crowdcompass-CC-Admin-West-uswest2.id}
+
+      - #comment: Route-Table entry for traffic to/from the crowdcompass CCWest Prod/Hotfix us-west-2 vpc over the inter-region vpc peering connection
+        cidr_block: 172.30.8.0/22
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_crowdcompass-CCWestProd-Hotfix-uswest2.id}
+
+      - #comment: Route-Table entry for traffic to/from the lanyon-infrastructurecore preprod-core-services us-east-1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.26.192.0/20
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_lanyon-preprod-core-services-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the lanyon-infrastructurecore prod-core-services us-east-1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.26.16.0/20
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_lanyon-prod-core-services-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the lanyon-infrastructurecore infrastructurecorevpc-uswest us-west-2 vpc over the inter-region vpc peering connection
+        cidr_block: 172.28.16.0/20
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_lanyon-infrastructurecorevpc-uswest-uswest2.id}
+
+      - #comment: Route-Table entry for traffic to/from the lanyonprodebs us-east-1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.26.64.0/22
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_lanyonprodebs-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the lanyonprodebs us-west-2 vpc over the inter-region vpc peering connection
+        cidr_block: 172.31.0.0/16
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_lanyonprodebs-uswest2.id}
+
+      - #comment: Route-Table entry for traffic to/from the rol-preprod us-east-1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.26.96.0/20
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_lanyon-rol-preprod-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the lanyon rol-prod us-east-1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.26.80.0/21
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_lanyon-rol-prod-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the lanyon rol-prod us-west-2 vpc over the inter-region vpc peering connection
+        cidr_block: 172.28.80.0/21
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_lanyon-rol-prod-uswest2.id}
+
+      - #comment: Route-Table entry for traffic to/from the lanyon-corp-it us-east-1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.26.8.0/21
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_lanyon-corp-it-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the lanyon-conferencedr us-west-2 vpc over the inter-region vpc peering connection
+        cidr_block: 172.28.64.0/21
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_lanyon-conferencedr-uswest2.id}
+
+      - #comment: Route-Table entry for traffic to/from the lanyonmobile devopstest us-east-1 vpc over the inter-region vpc peering connection
+        cidr_block: 10.0.0.0/16
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_lanyonmobile-devopstest-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the lanyonmobile mobile-preprod-useast us-east-1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.26.52.0/22
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_lanyonmobile-mobile-preprod-useast-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the lanyonmobile mobile-prod-useast us-east-1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.26.48.0/22
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_lanyonmobile-mobile-prod-useast-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the lanyonmobile mobile-prod-usoregon us-west-2 vpc over the inter-region vpc peering connection
+        cidr_block: 172.28.48.0/22
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_lanyonmobile-mobile-prod-usoregon-uswest2.id}
+
+      - #comment: Route-Table entry for traffic to/from the lanyonmobile mobile-preprod-usoregon us-west-2 vpc over the inter-region vpc peering connection
+        cidr_block: 172.28.52.0/22
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_lanyonmobile-mobile-preprod-usoregon-uswest2.id}
+
+      - #comment: Route-Table entry for traffic to/from the lanyonmobile mobile-legacy us-west-2 vpc over the inter-region vpc peering connection
+        cidr_block: 172.30.0.0/16
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_lanyonmobile-mobile-legacy-uswest2.id}
+
+      - #comment: Route-Table entry for traffic to/from the lanyon-passkey group-corporate us-east-1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.25.0.0/16
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_lanyon-passkey-group-corporate-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the lanyon-passkey ebs-preprod us-east-1 vpc over the inter-region vpc peering connection
+        cidr_block: 172.26.32.0/22
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_lanyon-passkey-ebs-preprod-useast1.id}
+
+      - #comment: Route-Table entry for traffic to/from the lanyon-passkey prod-dr us-west-2 vpc over the inter-region vpc peering connection
+        cidr_block: 172.27.0.0/16
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_lanyon-passkey-prod-dr-uswest2.id}
+
+      - #comment: Route-Table entry for traffic to/from the cvent-sandbox us-west-2 vpc over the inter-region vpc peering connection
+        cidr_block: 172.23.192.0/20
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_cvent-sandbox-uswest2.id}
+
+      - #comment: Route-Table entry for traffic to/from the core-cb-prod vpc over the inter-region vpc peering connection
+        cidr_block: 172.18.34.0/24
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_core-cb-prod-euwest1.id}
+
+      - #comment: Route-Table entry for traffic to/from the core-app-prod vpc in uw-west-1 over the inter-region vpc peering connection
+        cidr_block: 172.18.0.0/19
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_core-app-prod-euwest1.id}
+
+      - #comment: temp peering connection with the poc networking vpc for testing transit VPC
+        cidr_block: 172.29.160.0/23
+        vpc_peering_connection_id: pcx-0f960334aafc6457d
+
+      - #comment: temp peering connection with the core-obd2-dev account for reancloud testing
+        cidr_block: 172.29.164.0/23
+        vpc_peering_connection_id: pcx-094c4265665cb2d6d
+
+      - #comment: Route-Table entry for traffic to/from the core-app-prod vpc in eu-central-1 over the inter-region vpc peering connection
+        cidr_block: 172.19.0.0/19
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_core-app-prod-eucentral1.id}
+
+      - #comment: Route-Table entry for traffic to/from the core-tst-prod vpc in eu-west-1 over the inter-region vpc peering connection
+        cidr_block: 172.18.44.0/23
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_core-tst-prod-euwest1.id}
+
+      - #comment: Route-Table entry for traffic to/from the core-tst-prod vpc in eu-central-1 over the inter-region vpc peering connection
+        cidr_block: 172.19.44.0/23
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_core-tst-prod-eucentral1.id}
+
+      - #comment: Route table entry for traffic to/from the core-reinforc-prod vpc in us-east-1.
+        cidr_block: 172.29.180.0/22
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_core-reinforce-prod-useast1.id}
+
+      - #comment: Route table entry for traffic to/from the core-reinforc-prod vpc in us-west-2.
+        cidr_block: 172.29.196.0/22
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_core-reinforce-prod-uswest2.id}
+
+      - #comment: Route table entry for traffic to/from the core-reinforc-dev vpc in us-east-1.
+        cidr_block: 172.29.176.0/22
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_core-reinforce-dev-useast1.id}
+
+      - #comment: Route Table Entry for traffic to/from the corp-entsrv-prod us-east-1 vpc over the inter-region peering connection
+        cidr_block: 10.160.0.0/18
+        vpc_peering_connection_id: pcx-055db6d709776621c
+
+      - #comment: Route Table Entry for traffic to/from the corp-entsrv-prod us-west-2 vpc over the inter-region peering connection
+        cidr_block: 10.160.64.0/18
+        vpc_peering_connection_id: pcx-006e3cf3ef9eda225
+
+      - #comment: Route table entry for traffic to/from the core-cb-prod vpc in eu-central-1.
+        cidr_block: 172.19.34.0/24
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_core-cb-prod-eucentral1.id}
+
+      - #comment: Route table entry for traffic to/from the core-rmq-prod vpc in eu-central-1.
+        cidr_block: 172.19.38.0/24
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_core-rmq-prod-eucentral1.id}
+
+      - #comment: Route table entry for traffic to/from the core-cdt-prod vpc in eu-central-1.
+        cidr_block: 172.19.56.0/22
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_core-cdt-prod-eucentral1.id}
+
+      - #comment: Route table entry for traffic to/from the core-dbu-prod vpc in eu-central-1.
+        cidr_block: 172.19.33.128/25
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_core-dbu-prod-eucentral1.id}
+
+      - #comment: Route table entry for traffic to/from the core-els-prod vpc in eu-central-1.
+        cidr_block: 172.19.36.0/24
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_core-els-prod-eucentral1.id}
+
+      - #comment: Route table entry for traffic to/from the core-fnd-prod vpc in eu-central-1.
+        cidr_block: 172.19.40.0/23
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_core-fnd-prod-eucentral1.id}
+
+      - #comment: Route table entry for traffic to/from the core-sec-prod vpc in eu-central-1.
+        cidr_block: 172.19.42.0/24
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_core-sec-prod-eucentral1.id}
+
+      - #comment: Route table entry for traffic to/from the eu-ecommerce-prod vpc in eu-central-1.
+        cidr_block: 172.19.48.0/22
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_eu-ecommerce-prod-eucentral1.id}
+
+      - #comment: Route table entry for traffic to/from the core-tst-prod vpc in us-east-1.
+        cidr_block: 172.29.184.0/23
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_core-tst-prod-useast1.id}
+
+      - #comment: Route Table Entry for traffic to/from the core-kapow-dev us-east-1 vpc
+        cidr_block: 10.64.8.0/21
+        vpc_peering_connection_id: pcx-04d54ab322117d022
+
+      - #comment: Route Table Entry for traffic to/from the core-bt-dev us-east-1 vpc
+        cidr_block: 10.64.16.0/21
+        vpc_peering_connection_id: pcx-079945734fc94dc1a
+
+      - #comment: Route Table Entry for traffic to/from the core-cventorg-management vpc in useast1
+        cidr_block: 10.99.159.0/24
+        vpc_peering_connection_id: pcx-0952a59dcddb091c3
+
+      - #comment: Route Table Entry for traffic to/from the core-passkey-dev vpc in useast1
+        cidr_block: 10.64.24.0/21
+        vpc_peering_connection_id: pcx-019585c1b8d08a448
+
+      - #comment: Route Table Entry for traffic to/from the core-passkey-load vpc in useast1
+        cidr_block: 10.72.0.0/21
+        vpc_peering_connection_id: pcx-0c878fb9eaa4c1957
+
+      - #comment: Route Table Entry for traffic to/from core-tst-prod-uswest2
+        cidr_block: 10.103.184.0/23
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_core-tst-prod-uswest2.id}
+
+      - #comment: Route Table Entry for traffic to/from the core-kapow-prod vpc in us-east-1
+        cidr_block: 10.96.8.0/21
+        vpc_peering_connection_id: pcx-06302508c57d16a40
+
+      - #comment: Route Table Entry for traffic to/from the core-kapow-prod vpc in us-west-2
+        cidr_block: 10.100.8.0/21
+        vpc_peering_connection_id: pcx-00647078d285f654f
+
+      - #comment: Route Table Entry for traffic to/from the core-conference-dev vpc in us-east-1
+        cidr_block: 10.64.32.0/21
+        vpc_peering_connection_id: pcx-0cae35793440a8d31
+
+      - #comment: Route Table Entry for traffic to/from the core-socialtables-prod vpc in us-east-1
+        cidr_block: 10.96.16.0/21
+        vpc_peering_connection_id: pcx-088b7fd8bd142a978
+
+      - #comment: Route Table Entry for traffic to/from the core-socialtables-prod vpc in us-west-2
+        cidr_block: 10.100.16.0/21
+        vpc_peering_connection_id: pcx-01a10563da0096dfc
+
+      - #comment: Route Table Entry for traffic to/from the cc-qa51 vpc in us-west-2
+        cidr_block: 172.30.24.0/22
+        vpc_peering_connection_id: ${aws_vpc_peering_connection.cvent-management-uswest2_cc-qa51-uswest2.id}
+
+      - #comment: private peering route for core-weddingspot-dev us-east-1
+        cidr_block: 10.64.40.0/21
+        vpc_peering_connection_id: pcx-048b02cdca4d13fe4
+
+      - #comment: private peering route for core-weddingspot-prod us-east-1
+        cidr_block: 10.96.24.0/21
+        vpc_peering_connection_id: pcx-044cd282cdcc7d972
+
+      - #comment: private peering route for core-weddingspot-prod us-west-2
+        cidr_block: 10.100.24.0/21
+        vpc_peering_connection_id: pcx-09de58ea11f023aaf
+
+      - #comment: private peering route for core-socialtables-dev us-east-1
+        cidr_block: 10.64.48.0/21
+        vpc_peering_connection_id: pcx-03d805eb92f9a077e
+
+      - #comment: private peering route for cvent-csn-development us-east-1
+        cidr_block: 10.64.64.0/21
+        vpc_peering_connection_id: pcx-025fff97c771e8100
+
+  aws_route_table_association:
+    rt-association-dmz-elb:
+      count: ${var.az-count}
+      subnet_id: ${element(aws_subnet.dmz-elb-subnet.*.id,count.index)}
+      route_table_id: ${aws_route_table.rt-public.id}
+      depends_on:
+      - aws_subnet.dmz-elb-subnet
+      - aws_route_table.rt-public
+    rt-association-management:
+      count: ${var.az-count}
+      subnet_id: ${element(aws_subnet.management-subnet.*.id,count.index)}
+      route_table_id: ${element(aws_route_table.rt-private.*.id,count.index)}
+      depends_on:
+      - aws_subnet.management-subnet
+      - aws_route_table.rt-private
+    rt-association-services:
+      count: ${var.az-count}
+      subnet_id: ${element(aws_subnet.services-subnet.*.id,count.index)}
+      route_table_id: ${element(aws_route_table.rt-private.*.id,count.index)}
+      depends_on:
+      - aws_subnet.services-subnet
+      - aws_route_table.rt-private
+    rt-association-security:
+      count: ${var.az-count}
+      subnet_id: ${element(aws_subnet.security-subnet.*.id,count.index)}
+      route_table_id: ${element(aws_route_table.rt-private.*.id,count.index)}
+      depends_on:
+      - aws_subnet.security-subnet
+      - aws_route_table.rt-private
+    rt-association-net-management:
+      count: ${var.az-count}
+      subnet_id: ${element(aws_subnet.net-management-subnet.*.id,count.index)}
+      route_table_id: ${element(aws_route_table.rt-private.*.id,count.index)}
+      depends_on:
+      - aws_subnet.net-management-subnet
+      - aws_route_table.rt-private
+
+  aws_vpn_gateway_route_propagation:
+    route-propagation-public-rt:
+      vpn_gateway_id: ${aws_vpn_gateway.vpg.id}
+      route_table_id: ${aws_route_table.rt-public.id}
+      depends_on:
+      - aws_route_table.rt-public
+    route-propagation-private-rt:
+      count: ${var.az-count}
+      vpn_gateway_id: ${aws_vpn_gateway.vpg.id}
+      route_table_id: ${element(aws_route_table.rt-private.*.id,count.index)}
+      depends_on:
+      - aws_route_table.rt-private
+
+output:
+  route-table-private:
+    value: ${join(",",aws_route_table.rt-private.*.id)}
+  route-table-public:
+    value: ${aws_route_table.rt-public.id}
