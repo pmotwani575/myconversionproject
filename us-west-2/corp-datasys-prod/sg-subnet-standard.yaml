@@ -1,0 +1,63 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: 'Sets up the subnet-standard SG'
+Metadata: {}
+
+Parameters:
+    VpcName:
+        Description: VPC Name
+        Type: String
+        Default: corp-datasys-prod
+
+Resources:
+    SgSubnetStandard:
+        Type: AWS::EC2::SecurityGroup
+        Properties:
+            GroupName: subnet-standard
+            GroupDescription: subnet-managed security group
+            VpcId:
+                Fn::ImportValue: !Sub vpc-${VpcName}-VpcId
+            Tags:
+                - Key: Name
+                  Value: subnet-standard
+                - Key: name
+                  Value: subnet-standard
+                - Key: vpc
+                  Value: !Ref VpcName
+
+    # IngressRule1:
+    #     Type: AWS::EC2::SecurityGroupIngress
+    #     Properties:
+    #         GroupId: !Ref SgSubnetStandard
+    #         IpProtocol: tcp
+    #         FromPort: 22
+    #         ToPort: 22
+    #         CidrIp: 172.24.14.218/32
+    #         Description: allowing network access from the octo prod server in us-east-1
+    #
+    # IngressRule2:
+    #     Type: AWS::EC2::SecurityGroupIngress
+    #     Properties:
+    #         GroupId: !Ref SgSubnetStandard
+    #         IpProtocol: tcp
+    #         FromPort: 10933
+    #         ToPort: 10933
+    #         CidrIp: 172.24.14.218/32
+    #         Description: allowing network access from the octo prod server in us-east-1
+
+    EgressRule1:
+        Type: AWS::EC2::SecurityGroupEgress
+        Properties:
+            GroupId: !Ref SgSubnetStandard
+            IpProtocol: "-1"
+            CidrIp: 127.0.0.1/32
+            Description: Remove default egress 0.0.0.0/0
+
+Outputs:
+
+    StackName:
+        Value: !Ref AWS::StackName
+
+    SgSubnetStandardId:
+        Value: !Ref SgSubnetStandard
+        Export:
+            Name: sg-subnet-standard-id

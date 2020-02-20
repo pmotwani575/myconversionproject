@@ -1,0 +1,696 @@
+{
+  "resource": {
+    "aws_route_table": {
+      "rt-public": {
+        "vpc_id": "${aws_vpc.vpc.id}",
+        "depends_on": [
+          "aws_internet_gateway.igw"
+        ],
+        "tags": {
+          "Name": "route_table-public",
+          "vpc": "${var.vpc-name}"
+        },
+        "route": [
+          {
+            "cidr_block": "0.0.0.0/0",
+            "gateway_id": "${aws_internet_gateway.igw.id}"
+          },
+          {
+            "cidr_block": "10.0.0.0/8",
+            "gateway_id": "${aws_vpn_gateway.vpg.id}"
+          },
+          {
+            "cidr_block": "172.16.0.0/12",
+            "gateway_id": "${aws_vpn_gateway.vpg.id}"
+          },
+          {
+            "cidr_block": "172.31.0.0/17",
+            "vpc_peering_connection_id": "pcx-5d147134"
+          },
+          {
+            "cidr_block": "172.25.0.0/17",
+            "vpc_peering_connection_id": "pcx-c996f2a0"
+          },
+          {
+            "cidr_block": "172.24.128.0/17",
+            "vpc_peering_connection_id": "pcx-5996f230"
+          },
+          {
+            "cidr_block": "172.29.0.0/17",
+            "vpc_peering_connection_id": "pcx-3094f059"
+          },
+          {
+            "cidr_block": "172.24.64.0/18",
+            "vpc_peering_connection_id": "pcx-6d4b2304"
+          },
+          {
+            "cidr_block": "172.30.2.0/23",
+            "vpc_peering_connection_id": "pcx-8997f5e0"
+          },
+          {
+            "cidr_block": "172.30.16.0/22",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management_emi.id}"
+          },
+          {
+            "cidr_block": "172.30.0.0/23",
+            "vpc_peering_connection_id": "pcx-b5b3c0dc"
+          },
+          {
+            "cidr_block": "172.29.128.0/23",
+            "vpc_peering_connection_id": "pcx-76bef21f"
+          },
+          {
+            "cidr_block": "172.31.128.0/17",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management_corpsys-production.id}"
+          },
+          {
+            "cidr_block": "172.23.128.0/18",
+            "vpc_peering_connection_id": "pcx-02a3f81b92d4eb8aa"
+          },
+          {
+            "cidr_block": "172.29.132.0/22",
+            "vpc_peering_connection_id": "pcx-412d3b28"
+          },
+          {
+            "cidr_block": "172.29.136.0/22",
+            "vpc_peering_connection_id": "pcx-8d6e99e5"
+          },
+          {
+            "cidr_block": "172.30.4.0/22",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management_decision-street.id}"
+          },
+          {
+            "cidr_block": "172.29.192.0/22",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_conference-production-uswest2.id}"
+          },
+          {
+            "cidr_block": "172.23.0.0/17",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_cvent-production-uswest2.id}"
+          },
+          {
+            "cidr_block": "172.30.28.0/22",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_crowdcompass-CC-Admin-West-uswest2.id}"
+          },
+          {
+            "cidr_block": "172.30.8.0/22",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_crowdcompass-CCWestProd-Hotfix-uswest2.id}"
+          },
+          {
+            "cidr_block": "172.26.192.0/20",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_lanyon-preprod-core-services-useast1.id}"
+          },
+          {
+            "cidr_block": "172.26.16.0/20",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_lanyon-prod-core-services-useast1.id}"
+          },
+          {
+            "cidr_block": "172.28.16.0/20",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_lanyon-infrastructurecorevpc-uswest-uswest2.id}"
+          },
+          {
+            "cidr_block": "172.26.64.0/22",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_lanyonprodebs-useast1.id}"
+          },
+          {
+            "cidr_block": "172.31.0.0/16",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_lanyonprodebs-uswest2.id}"
+          },
+          {
+            "cidr_block": "172.26.96.0/20",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_lanyon-rol-preprod-useast1.id}"
+          },
+          {
+            "cidr_block": "172.26.80.0/21",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_lanyon-rol-prod-useast1.id}"
+          },
+          {
+            "cidr_block": "172.28.80.0/21",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_lanyon-rol-prod-uswest2.id}"
+          },
+          {
+            "cidr_block": "172.26.8.0/21",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_lanyon-corp-it-useast1.id}"
+          },
+          {
+            "cidr_block": "172.28.64.0/21",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_lanyon-conferencedr-uswest2.id}"
+          },
+          {
+            "cidr_block": "172.26.52.0/22",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_lanyonmobile-mobile-preprod-useast-useast1.id}"
+          },
+          {
+            "cidr_block": "172.26.48.0/22",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_lanyonmobile-mobile-prod-useast-useast1.id}"
+          },
+          {
+            "cidr_block": "172.28.48.0/22",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_lanyonmobile-mobile-prod-usoregon-uswest2.id}"
+          },
+          {
+            "cidr_block": "172.28.52.0/22",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_lanyonmobile-mobile-preprod-usoregon-uswest2.id}"
+          },
+          {
+            "cidr_block": "172.30.0.0/16",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_lanyonmobile-mobile-legacy-uswest2.id}"
+          },
+          {
+            "cidr_block": "172.25.0.0/16",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_lanyon-passkey-group-corporate-useast1.id}"
+          },
+          {
+            "cidr_block": "172.26.32.0/22",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_lanyon-passkey-ebs-preprod-useast1.id}"
+          },
+          {
+            "cidr_block": "172.27.0.0/16",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_lanyon-passkey-prod-dr-uswest2.id}"
+          },
+          {
+            "cidr_block": "172.23.192.0/20",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_cvent-sandbox-uswest2.id}"
+          },
+          {
+            "cidr_block": "172.29.130.0/24",
+            "vpc_peering_connection_id": "pcx-f9b04391"
+          },
+          {
+            "cidr_block": "172.18.48.0/22",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_eu-ecommerce-prod-euwest1.id}"
+          },
+          {
+            "cidr_block": "172.19.48.0/22",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_eu-ecommerce-prod-eucentral1.id}"
+          },
+          {
+            "cidr_block": "172.18.40.0/23",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-fnd-prod-euwest1.id}"
+          },
+          {
+            "cidr_block": "172.18.36.0/24",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-els-prod-euwest1.id}"
+          },
+          {
+            "cidr_block": "172.18.38.0/24",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-rmq-prod-euwest1.id}"
+          },
+          {
+            "cidr_block": "172.18.33.128/25",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-dbu-prod-euwest1.id}"
+          },
+          {
+            "cidr_block": "172.18.32.0/24",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-cdt-prod-euwest1.id}"
+          },
+          {
+            "cidr_block": "172.18.56.0/22",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-cdt-prod-euwest1.id}"
+          },
+          {
+            "cidr_block": "172.18.0.0/19",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-app-prod-euwest1.id}"
+          },
+          {
+            "cidr_block": "172.18.42.0/24",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-sec-prod-euwest1.id}"
+          },
+          {
+            "cidr_block": "172.18.34.0/24",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-cb-prod-euwest1.id}"
+          },
+          {
+            "cidr_block": "172.18.44.0/23",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-tst-prod-euwest1.id}"
+          },
+          {
+            "cidr_block": "172.19.40.0/23",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-fnd-prod-eucentral1.id}"
+          },
+          {
+            "cidr_block": "172.19.56.0/22",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-cdt-prod-eucentral1.id}"
+          },
+          {
+            "cidr_block": "172.19.42.0/24",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-sec-prod-eucentral1.id}"
+          },
+          {
+            "cidr_block": "172.19.0.0/19",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-app-prod-eucentral1.id}"
+          },
+          {
+            "cidr_block": "172.19.34.0/24",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-cb-prod-eucentral1.id}"
+          },
+          {
+            "cidr_block": "172.19.36.0/24",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-els-prod-eucentral1.id}"
+          },
+          {
+            "cidr_block": "172.19.38.0/24",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-rmq-prod-eucentral1.id}"
+          },
+          {
+            "cidr_block": "172.19.33.128/25",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-dbu-prod-eucentral1.id}"
+          },
+          {
+            "cidr_block": "172.19.44.0/23",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-tst-prod-eucentral1.id}"
+          },
+          {
+            "cidr_block": "172.29.160.0/23",
+            "vpc_peering_connection_id": "pcx-08462771f12cd3007"
+          },
+          {
+            "cidr_block": "172.29.164.0/23",
+            "vpc_peering_connection_id": "pcx-07b9d9789ecae79a3"
+          },
+          {
+            "cidr_block": "172.29.180.0/22",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-reinforce-prod-useast1.id}"
+          },
+          {
+            "cidr_block": "172.29.196.0/22",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-reinforce-prod-uswest2.id}"
+          },
+          {
+            "cidr_block": "172.29.176.0/22",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-reinforce-dev-useast1.id}"
+          },
+          {
+            "cidr_block": "10.160.0.0/18",
+            "vpc_peering_connection_id": "pcx-0cdc123b7f3382022"
+          },
+          {
+            "cidr_block": "10.160.64.0/18",
+            "vpc_peering_connection_id": "pcx-0826e04b74bb6577d"
+          },
+          {
+            "cidr_block": "172.30.40.0/22",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_decision-street-development-useast1.id}"
+          },
+          {
+            "cidr_block": "10.161.0.0/18",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_corp-datasys-prod-useast1.id}"
+          },
+          {
+            "cidr_block": "10.161.64.0/18",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_corp-datasys-prod-uswest2.id}"
+          }
+        ]
+      },
+      "rt-private": {
+        "count": "${var.az-count}",
+        "vpc_id": "${aws_vpc.vpc.id}",
+        "depends_on": [
+          "aws_nat_gateway.nat-gw"
+        ],
+        "tags": {
+          "Name": "route_table-private-${lookup(var.az, count.index)}",
+          "vpc": "${var.vpc-name}"
+        },
+        "route": [
+          {
+            "cidr_block": "0.0.0.0/0",
+            "nat_gateway_id": "${element(aws_nat_gateway.nat-gw.*.id,count.index)}"
+          },
+          {
+            "cidr_block": "10.0.0.0/8",
+            "gateway_id": "${aws_vpn_gateway.vpg.id}"
+          },
+          {
+            "cidr_block": "172.16.0.0/12",
+            "gateway_id": "${aws_vpn_gateway.vpg.id}"
+          },
+          {
+            "cidr_block": "172.31.0.0/17",
+            "vpc_peering_connection_id": "pcx-5d147134"
+          },
+          {
+            "cidr_block": "172.25.0.0/17",
+            "vpc_peering_connection_id": "pcx-c996f2a0"
+          },
+          {
+            "cidr_block": "172.24.128.0/17",
+            "vpc_peering_connection_id": "pcx-5996f230"
+          },
+          {
+            "cidr_block": "172.29.0.0/17",
+            "vpc_peering_connection_id": "pcx-3094f059"
+          },
+          {
+            "cidr_block": "172.24.64.0/18",
+            "vpc_peering_connection_id": "pcx-6d4b2304"
+          },
+          {
+            "cidr_block": "172.30.2.0/23",
+            "vpc_peering_connection_id": "pcx-8997f5e0"
+          },
+          {
+            "cidr_block": "172.30.16.0/22",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management_emi.id}"
+          },
+          {
+            "cidr_block": "172.30.0.0/23",
+            "vpc_peering_connection_id": "pcx-b5b3c0dc"
+          },
+          {
+            "cidr_block": "172.29.128.0/23",
+            "vpc_peering_connection_id": "pcx-76bef21f"
+          },
+          {
+            "cidr_block": "172.31.128.0/17",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management_corpsys-production.id}"
+          },
+          {
+            "cidr_block": "172.23.128.0/18",
+            "vpc_peering_connection_id": "pcx-02a3f81b92d4eb8aa"
+          },
+          {
+            "cidr_block": "172.29.132.0/22",
+            "vpc_peering_connection_id": "pcx-412d3b28"
+          },
+          {
+            "cidr_block": "172.29.136.0/22",
+            "vpc_peering_connection_id": "pcx-8d6e99e5"
+          },
+          {
+            "cidr_block": "172.30.4.0/22",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management_decision-street.id}"
+          },
+          {
+            "cidr_block": "172.29.192.0/22",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_conference-production-uswest2.id}"
+          },
+          {
+            "cidr_block": "172.23.0.0/17",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_cvent-production-uswest2.id}"
+          },
+          {
+            "cidr_block": "172.30.28.0/22",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_crowdcompass-CC-Admin-West-uswest2.id}"
+          },
+          {
+            "cidr_block": "172.30.8.0/22",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_crowdcompass-CCWestProd-Hotfix-uswest2.id}"
+          },
+          {
+            "cidr_block": "172.26.192.0/20",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_lanyon-preprod-core-services-useast1.id}"
+          },
+          {
+            "cidr_block": "172.26.16.0/20",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_lanyon-prod-core-services-useast1.id}"
+          },
+          {
+            "cidr_block": "172.28.16.0/20",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_lanyon-infrastructurecorevpc-uswest-uswest2.id}"
+          },
+          {
+            "cidr_block": "172.26.64.0/22",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_lanyonprodebs-useast1.id}"
+          },
+          {
+            "cidr_block": "172.31.0.0/16",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_lanyonprodebs-uswest2.id}"
+          },
+          {
+            "cidr_block": "172.26.96.0/20",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_lanyon-rol-preprod-useast1.id}"
+          },
+          {
+            "cidr_block": "172.26.80.0/21",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_lanyon-rol-prod-useast1.id}"
+          },
+          {
+            "cidr_block": "172.28.80.0/21",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_lanyon-rol-prod-uswest2.id}"
+          },
+          {
+            "cidr_block": "172.26.8.0/21",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_lanyon-corp-it-useast1.id}"
+          },
+          {
+            "cidr_block": "172.28.64.0/21",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_lanyon-conferencedr-uswest2.id}"
+          },
+          {
+            "cidr_block": "172.26.52.0/22",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_lanyonmobile-mobile-preprod-useast-useast1.id}"
+          },
+          {
+            "cidr_block": "172.26.48.0/22",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_lanyonmobile-mobile-prod-useast-useast1.id}"
+          },
+          {
+            "cidr_block": "172.28.48.0/22",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_lanyonmobile-mobile-prod-usoregon-uswest2.id}"
+          },
+          {
+            "cidr_block": "172.28.52.0/22",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_lanyonmobile-mobile-preprod-usoregon-uswest2.id}"
+          },
+          {
+            "cidr_block": "172.30.0.0/16",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_lanyonmobile-mobile-legacy-uswest2.id}"
+          },
+          {
+            "cidr_block": "172.25.0.0/16",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_lanyon-passkey-group-corporate-useast1.id}"
+          },
+          {
+            "cidr_block": "172.26.32.0/22",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_lanyon-passkey-ebs-preprod-useast1.id}"
+          },
+          {
+            "cidr_block": "172.27.0.0/16",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_lanyon-passkey-prod-dr-uswest2.id}"
+          },
+          {
+            "cidr_block": "172.23.192.0/20",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_cvent-sandbox-uswest2.id}"
+          },
+          {
+            "cidr_block": "172.29.130.0/24",
+            "vpc_peering_connection_id": "pcx-f9b04391"
+          },
+          {
+            "cidr_block": "172.18.48.0/22",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_eu-ecommerce-prod-euwest1.id}"
+          },
+          {
+            "cidr_block": "172.19.48.0/22",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_eu-ecommerce-prod-eucentral1.id}"
+          },
+          {
+            "cidr_block": "172.18.40.0/23",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-fnd-prod-euwest1.id}"
+          },
+          {
+            "cidr_block": "172.18.36.0/24",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-els-prod-euwest1.id}"
+          },
+          {
+            "cidr_block": "172.18.38.0/24",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-rmq-prod-euwest1.id}"
+          },
+          {
+            "cidr_block": "172.18.33.128/25",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-dbu-prod-euwest1.id}"
+          },
+          {
+            "cidr_block": "172.18.32.0/24",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-cdt-prod-euwest1.id}"
+          },
+          {
+            "cidr_block": "172.18.56.0/22",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-cdt-prod-euwest1.id}"
+          },
+          {
+            "cidr_block": "172.18.0.0/19",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-app-prod-euwest1.id}"
+          },
+          {
+            "cidr_block": "172.18.42.0/24",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-sec-prod-euwest1.id}"
+          },
+          {
+            "cidr_block": "172.18.34.0/24",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-cb-prod-euwest1.id}"
+          },
+          {
+            "cidr_block": "172.18.44.0/23",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-tst-prod-euwest1.id}"
+          },
+          {
+            "cidr_block": "172.19.40.0/23",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-fnd-prod-eucentral1.id}"
+          },
+          {
+            "cidr_block": "172.19.56.0/22",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-cdt-prod-eucentral1.id}"
+          },
+          {
+            "cidr_block": "172.19.42.0/24",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-sec-prod-eucentral1.id}"
+          },
+          {
+            "cidr_block": "172.19.0.0/19",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-app-prod-eucentral1.id}"
+          },
+          {
+            "cidr_block": "172.19.34.0/24",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-cb-prod-eucentral1.id}"
+          },
+          {
+            "cidr_block": "172.19.36.0/24",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-els-prod-eucentral1.id}"
+          },
+          {
+            "cidr_block": "172.19.38.0/24",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-rmq-prod-eucentral1.id}"
+          },
+          {
+            "cidr_block": "172.19.33.128/25",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-dbu-prod-eucentral1.id}"
+          },
+          {
+            "cidr_block": "172.19.44.0/23",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-tst-prod-eucentral1.id}"
+          },
+          {
+            "cidr_block": "172.29.160.0/23",
+            "vpc_peering_connection_id": "pcx-08462771f12cd3007"
+          },
+          {
+            "cidr_block": "172.29.164.0/23",
+            "vpc_peering_connection_id": "pcx-07b9d9789ecae79a3"
+          },
+          {
+            "cidr_block": "172.29.180.0/22",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-reinforce-prod-useast1.id}"
+          },
+          {
+            "cidr_block": "172.29.196.0/22",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-reinforce-prod-uswest2.id}"
+          },
+          {
+            "cidr_block": "172.29.176.0/22",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_core-reinforce-dev-useast1.id}"
+          },
+          {
+            "cidr_block": "10.160.0.0/18",
+            "vpc_peering_connection_id": "pcx-0cdc123b7f3382022"
+          },
+          {
+            "cidr_block": "10.160.64.0/18",
+            "vpc_peering_connection_id": "pcx-0826e04b74bb6577d"
+          },
+          {
+            "cidr_block": "172.30.40.0/22",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_decision-street-development-useast1.id}"
+          },
+          {
+            "cidr_block": "10.161.0.0/18",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_corp-datasys-prod-useast1.id"
+          },
+          {
+            "cidr_block": "10.161.128.0/18",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_corp-datasys-dev-useast1.id}"
+          },
+          {
+            "cidr_block": "10.160.128.0/18",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_corp-entsrv-dev-useast1.id}"
+          },
+          {
+            "cidr_block": "10.161.64.0/18",
+            "vpc_peering_connection_id": "${aws_vpc_peering_connection.cvent-management-useast1_corp-datasys-prod-uswest2.id}"
+          }
+        ]
+      }
+    },
+    "aws_route_table_association": {
+      "rt-association-dmz-elb": {
+        "count": "${var.az-count}",
+        "subnet_id": "${element(aws_subnet.dmz-elb-subnet.*.id,count.index)}",
+        "route_table_id": "${aws_route_table.rt-public.id}",
+        "depends_on": [
+          "aws_subnet.dmz-elb-subnet",
+          "aws_route_table.rt-public"
+        ]
+      },
+      "rt-association-untrust": {
+        "count": "${var.az-count}",
+        "subnet_id": "${element(aws_subnet.untrust-subnet.*.id,count.index)}",
+        "route_table_id": "${aws_route_table.rt-public.id}",
+        "depends_on": [
+          "aws_subnet.untrust-subnet",
+          "aws_route_table.rt-public"
+        ]
+      },
+      "rt-association-management": {
+        "count": "${var.az-count}",
+        "subnet_id": "${element(aws_subnet.management-subnet.*.id,count.index)}",
+        "route_table_id": "${element(aws_route_table.rt-private.*.id,count.index)}",
+        "depends_on": [
+          "aws_subnet.management-subnet",
+          "aws_route_table.rt-private"
+        ]
+      },
+      "rt-association-services": {
+        "count": "${var.az-count}",
+        "subnet_id": "${element(aws_subnet.services-subnet.*.id,count.index)}",
+        "route_table_id": "${element(aws_route_table.rt-private.*.id,count.index)}",
+        "depends_on": [
+          "aws_subnet.services-subnet",
+          "aws_route_table.rt-private"
+        ]
+      },
+      "rt-association-security": {
+        "count": "${var.az-count}",
+        "subnet_id": "${element(aws_subnet.security-subnet.*.id,count.index)}",
+        "route_table_id": "${element(aws_route_table.rt-private.*.id,count.index)}",
+        "depends_on": [
+          "aws_subnet.security-subnet",
+          "aws_route_table.rt-private"
+        ]
+      },
+      "rt-association-net-management": {
+        "count": "${var.az-count}",
+        "subnet_id": "${element(aws_subnet.net-management-subnet.*.id,count.index)}",
+        "route_table_id": "${element(aws_route_table.rt-private.*.id,count.index)}",
+        "depends_on": [
+          "aws_subnet.net-management-subnet",
+          "aws_route_table.rt-private"
+        ]
+      }
+    },
+    "aws_vpn_gateway_route_propagation": {
+      "route-propagation-public-rt": {
+        "vpn_gateway_id": "${aws_vpn_gateway.vpg.id}",
+        "route_table_id": "${aws_route_table.rt-public.id}",
+        "depends_on": [
+          "aws_route_table.rt-public"
+        ]
+      },
+      "route-propagation-private-rt": {
+        "count": "${var.az-count}",
+        "vpn_gateway_id": "${aws_vpn_gateway.vpg.id}",
+        "route_table_id": "${element(aws_route_table.rt-private.*.id,count.index)}",
+        "depends_on": [
+          "aws_route_table.rt-private"
+        ]
+      }
+    }
+  },
+  "output": {
+    "route-table-private": {
+      "value": "${join(\",\",aws_route_table.rt-private.*.id)}"
+    },
+    "route-table-public": {
+      "value": "${aws_route_table.rt-public.id}"
+    }
+  }
+}

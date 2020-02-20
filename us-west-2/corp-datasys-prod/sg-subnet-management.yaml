@@ -1,0 +1,44 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: 'Sets up the subnet-management SG'
+Metadata: {}
+
+Parameters:
+    VpcName:
+        Description: VPC Name
+        Type: String
+        Default: corp-datasys-prod
+
+Resources:
+    SgSubnetManagement:
+        Type: AWS::EC2::SecurityGroup
+        Properties:
+            GroupName: subnet-management
+            GroupDescription: subnet-managed security group
+            VpcId:
+                Fn::ImportValue: !Sub vpc-${VpcName}-VpcId
+            Tags:
+                - Key: Name
+                  Value: subnet-management
+                - Key: name
+                  Value: subnet-management
+                - Key: vpc
+                  Value: !Ref VpcName
+
+    EgressRule1:
+        Type: AWS::EC2::SecurityGroupEgress
+        Properties:
+            GroupId: !Ref SgSubnetManagement
+            IpProtocol: "-1"
+            CidrIp: 127.0.0.1/32
+            Description: Remove default egress 0.0.0.0/0
+
+Outputs:
+
+    StackName:
+        Value: !Ref AWS::StackName
+
+    SgSubnetManagementId:
+        Value: !Ref SgSubnetManagement
+        Export:
+            Name: sg-subnet-management-id
+

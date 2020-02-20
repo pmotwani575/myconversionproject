@@ -1,0 +1,44 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: 'Sets up the subnet-web-dmz SG'
+Metadata: {}
+
+Parameters:
+    VpcName:
+        Description: VPC Name
+        Type: String
+        Default: corp-datasys-prod
+
+Resources:
+    SgSubnetWebDmz:
+        Type: AWS::EC2::SecurityGroup
+        Properties:
+            GroupName: subnet-web-dmz
+            GroupDescription: subnet-managed security group
+            VpcId:
+                Fn::ImportValue: !Sub vpc-${VpcName}-VpcId
+            Tags:
+                - Key: Name
+                  Value: subnet-web-dmz
+                - Key: name
+                  Value: subnet-web-dmz
+                - Key: vpc
+                  Value: !Ref VpcName
+
+    EgressRule1:
+        Type: AWS::EC2::SecurityGroupEgress
+        Properties:
+            GroupId: !Ref SgSubnetWebDmz
+            IpProtocol: "-1"
+            CidrIp: 127.0.0.1/32
+            Description: Remove default egress 0.0.0.0/0
+
+Outputs:
+
+    StackName:
+        Value: !Ref AWS::StackName
+
+    SgSubnetWebDmzId:
+        Value: !Ref SgSubnetWebDmz
+        Export:
+            Name: sg-subnet-web-dmz-id
+

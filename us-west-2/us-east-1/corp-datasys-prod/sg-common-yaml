@@ -1,0 +1,448 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: 'Sets up the common SG'
+Metadata: {}
+
+Parameters:
+    VpcName:
+        Description: VPC Name
+        Type: String
+        Default: corp-datasys-prod
+
+Resources:
+    SgCommon:
+        Type: AWS::EC2::SecurityGroup
+        Properties:
+            GroupName: common
+            GroupDescription: common security group
+            VpcId:
+                Fn::ImportValue: !Sub vpc-${VpcName}-VpcId
+            Tags:
+                - Key: Name
+                  Value: common
+                - Key: name
+                  Value: common
+                - Key: vpc
+                  Value: !Ref VpcName
+
+    IngressRule1:
+        Type: AWS::EC2::SecurityGroupIngress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: tcp
+            FromPort: 22
+            ToPort: 22
+            CidrIp: 10.20.34.0/23
+            Description: Allowing ssh access from HQ management subnet. Needed for CPS
+
+    IngressRule2:
+        Type: AWS::EC2::SecurityGroupIngress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: tcp
+            FromPort: 3389
+            ToPort: 3389
+            CidrIp: 10.20.34.0/23
+            Description: Allowing rdp access from HQ management subnet. Needed for CPS
+
+    IngressRule3:
+        Type: AWS::EC2::SecurityGroupIngress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: tcp
+            FromPort: 5986
+            ToPort: 5986
+            CidrIp: 10.20.34.0/23
+            Description: Allowing wimrm access from HQ management subnet. Needed for CPS
+
+    IngressRule4:
+        Type: AWS::EC2::SecurityGroupIngress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: tcp
+            FromPort: 22
+            ToPort: 22
+            CidrIp: 10.20.40.0/23
+            Description: Allowing ssh access from HQ services subnet. Needed for CPS
+
+    IngressRule5:
+        Type: AWS::EC2::SecurityGroupIngress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: tcp
+            FromPort: 3389
+            ToPort: 3389
+            CidrIp: 10.20.40.0/23
+            Description: Allowing rdp access from HQ services subnet. Needed for CPS
+
+    IngressRule6:
+        Type: AWS::EC2::SecurityGroupIngress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: tcp
+            FromPort: 5986
+            ToPort: 5986
+            CidrIp: 10.20.40.0/23
+            Description: Allowing wimrm access from HQ services subnet. Needed for CPS
+
+    IngressRule7:
+        Type: AWS::EC2::SecurityGroupIngress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: tcp
+            FromPort: 22
+            ToPort: 22
+            CidrIp: 172.21.54.0/23
+            Description: Allowing ssh access from DFT management subnet. Needed for CPS
+
+    IngressRule8:
+        Type: AWS::EC2::SecurityGroupIngress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: tcp
+            FromPort: 3389
+            ToPort: 3389
+            CidrIp: 172.21.54.0/23
+            Description: Allowing rdp access from DFT management subnet. Needed for CPS
+
+    IngressRule9:
+        Type: AWS::EC2::SecurityGroupIngress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: tcp
+            FromPort: 5986
+            ToPort: 5986
+            CidrIp: 172.21.54.0/23
+            Description: Allowing winrm access from DFT management subnet. Needed for CPS
+
+    IngressRule10:
+        Type: AWS::EC2::SecurityGroupIngress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: tcp
+            FromPort: 22
+            ToPort: 22
+            CidrIp: 172.21.62.0/23
+            Description: Allowing ssh access from DFT services subnet. Needed for CPS
+
+    IngressRule11:
+        Type: AWS::EC2::SecurityGroupIngress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: tcp
+            FromPort: 3389
+            ToPort: 3389
+            CidrIp: 172.21.62.0/23
+            Description: Allowing rdp access from DFT services subnet. Needed for CPS
+
+    IngressRule12:
+        Type: AWS::EC2::SecurityGroupIngress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: tcp
+            FromPort: 5986
+            ToPort: 5986
+            CidrIp: 172.21.62.0/23
+            Description: Allowing winrm access from DFT services subnet. Needed for CPS
+
+    IngressRule13:
+        Type: AWS::EC2::SecurityGroupIngress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: tcp
+            FromPort: 22
+            ToPort: 22
+            CidrIp: 172.22.32.0/23
+            Description: Allowing ssh access from PDX management subnet. Needed for CPS
+
+    IngressRule14:
+        Type: AWS::EC2::SecurityGroupIngress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: tcp
+            FromPort: 3389
+            ToPort: 3389
+            CidrIp: 172.22.32.0/23
+            Description: Allowing rdp access from PDX management subnet. Needed for CPS
+
+    IngressRule15:
+        Type: AWS::EC2::SecurityGroupIngress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: tcp
+            FromPort: 5986
+            ToPort: 5986
+            CidrIp: 172.22.32.0/23
+            Description: Allowing wimrm access from PDX management subnet. Needed for CPS
+
+    IngressRule16:
+        Type: AWS::EC2::SecurityGroupIngress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: tcp
+            FromPort: 22
+            ToPort: 22
+            CidrIp: 172.22.38.0/23
+            Description: Allowing ssh access from PDX services subnet. Needed for CPS
+
+    IngressRule17:
+        Type: AWS::EC2::SecurityGroupIngress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: tcp
+            FromPort: 3389
+            ToPort: 3389
+            CidrIp: 172.22.38.0/23
+            Description: Allowing rdp access from PDX services subnet. Needed for CPS
+
+    IngressRule18:
+        Type: AWS::EC2::SecurityGroupIngress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: tcp
+            FromPort: 5986
+            ToPort: 5986
+            CidrIp: 172.22.38.0/23
+            Description: Allowing wimrm access from PDX services subnet. Needed for CPS
+
+    IngressRule19:
+        Type: AWS::EC2::SecurityGroupIngress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: icmp
+            FromPort: -1
+            ToPort: -1
+            CidrIp: 10.0.0.0/8
+            Description: Allow ICMP traffic from RFC-1918 private network 10.0.0.0/8
+
+    IngressRule20:
+        Type: AWS::EC2::SecurityGroupIngress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: icmp
+            FromPort: -1
+            ToPort: -1
+            CidrIp: 172.16.0.0/12
+            Description: Allow ICMP traffic from RFC-1918 private network 172.16.0.0/12
+
+    IngressRule21:
+        Type: AWS::EC2::SecurityGroupIngress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: -1
+            CidrIp: 10.19.0.0/16
+            Description: Allow all traffic from the HQ VPN Subnet
+
+    IngressRule22:
+        Type: AWS::EC2::SecurityGroupIngress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: -1
+            CidrIp: 172.21.236.0/22
+            Description: Allow all traffic from the DFT VPN Subnet
+
+    IngressRule23:
+        Type: AWS::EC2::SecurityGroupIngress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: -1
+            CidrIp: 10.39.0.0/22
+            Description: Allow all traffic from the IN VPN Subnet
+
+    IngressRule24:
+        Type: AWS::EC2::SecurityGroupIngress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: tcp
+            FromPort: 139
+            ToPort: 139
+            CidrIp: 172.21.60.27/32
+            Description: Allows the SEP manager to push SEP packages
+
+    IngressRule25:
+        Type: AWS::EC2::SecurityGroupIngress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: tcp
+            FromPort: 445
+            ToPort: 445
+            CidrIp: 172.21.60.27/32
+            Description: Allows the SEP manager to push SEP packages
+
+    IngressRule26:
+        Type: AWS::EC2::SecurityGroupIngress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: tcp
+            FromPort: 139
+            ToPort: 139
+            CidrIp: 10.10.220.123/32
+            Description: Allows access from the HQ Shavlik Server
+
+    IngressRule27:
+        Type: AWS::EC2::SecurityGroupIngress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: tcp
+            FromPort: 445
+            ToPort: 445
+            CidrIp: 10.10.220.123/32
+            Description: Allows access from the HQ Shavlik Server
+
+    IngressRule28:
+        Type: AWS::EC2::SecurityGroupIngress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: -1
+            CidrIp: 172.22.188.0/22
+            Description: Allow all traffic from the PDX VPN Subnet
+
+    Icr1566IngressRule1:
+        Type: AWS::EC2::SecurityGroupIngress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: tcp
+            FromPort: 5985
+            ToPort: 5985
+            CidrIp: 10.20.34.0/23
+            Description: Allowing wimrm access from HQ management subnet. Port 5985 is needed to unblock automation.
+
+    Icr1566IngressRule2:
+        Type: AWS::EC2::SecurityGroupIngress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: tcp
+            FromPort: 5985
+            ToPort: 5985
+            CidrIp: 10.20.40.0/23
+            Description: Allowing wimrm access from HQ services subnet. Port 5985 is needed to unblock automation.
+
+    Icr1566IngressRule3:
+        Type: AWS::EC2::SecurityGroupIngress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: tcp
+            FromPort: 5985
+            ToPort: 5985
+            CidrIp: 172.21.54.0/23
+            Description: Allowing winrm access from DFT management subnet. Port 5985 is needed to unblock automation.
+
+    Icr1566IngressRule4:
+        Type: AWS::EC2::SecurityGroupIngress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: tcp
+            FromPort: 5985
+            ToPort: 5985
+            CidrIp: 172.21.62.0/23
+            Description: Allowing winrm access from DFT services subnet. Port 5985 is needed to unblock automation.
+
+    Icr1566IngressRule5:
+        Type: AWS::EC2::SecurityGroupIngress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: tcp
+            FromPort: 5985
+            ToPort: 5985
+            CidrIp: 172.22.32.0/23
+            Description: Allowing wimrm access from PDX management subnet. Port 5985 is needed to unblock automation.
+
+    Icr1566IngressRule6:
+        Type: AWS::EC2::SecurityGroupIngress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: tcp
+            FromPort: 5985
+            ToPort: 5985
+            CidrIp: 172.22.38.0/23
+            Description: Allowing wimrm access from PDX services subnet. Port 5985 is needed to unblock automation.
+
+    EgressRule1:
+        Type: AWS::EC2::SecurityGroupEgress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: -1
+            FromPort: 0
+            ToPort: 0
+            CidrIp: 10.0.0.0/8
+            Description: Allow outbound traffic to RFC-1918 private network 10.0.0.0/8
+
+    EgressRule2:
+        Type: AWS::EC2::SecurityGroupEgress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: -1
+            FromPort: 0
+            ToPort: 0
+            CidrIp: 172.16.0.0/12
+            Description: Allow outbound traffic to RFC-1918 private network 172.16.0.0/12
+
+    Icr1248IngressRule1:
+        Type: AWS::EC2::SecurityGroupIngress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: tcp
+            FromPort: 139
+            ToPort: 139
+            CidrIp: 10.10.220.123/32
+            Description: Allows Shavlik to patch hosts across all datacenters
+
+    Icr1248IngressRule2:
+        Type: AWS::EC2::SecurityGroupIngress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: tcp
+            FromPort: 445
+            ToPort: 445
+            CidrIp: 10.10.220.123/32
+            Description: Allows Shavlik to patch hosts across all datacenters
+
+    EgressRule3:
+        Type: AWS::EC2::SecurityGroupEgress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: icmp
+            FromPort: -1
+            ToPort: -1
+            CidrIp: 0.0.0.0/0
+            Description: Allow outbound ICMP traffic to 0.0.0.0/0
+
+    EgressRule4:
+        Type: AWS::EC2::SecurityGroupEgress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: tcp
+            FromPort: 443
+            ToPort: 443
+            CidrIp: 0.0.0.0/0
+            Description: Rule to make internet-bound HTTPS calls. This rule is subject to change in the future based on the policies enforced by the Info-Sec team.
+
+    EgressRule5:
+        Type: AWS::EC2::SecurityGroupEgress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: tcp
+            FromPort: 80
+            ToPort: 80
+            CidrIp: 0.0.0.0/0
+            Description: Rule to make internet-bound HTTP calls. This rule is subject to change in the future based on the policies enforced by the Info-Sec team.
+
+    EgressRule6:
+        Type: AWS::EC2::SecurityGroupEgress
+        Properties:
+            GroupId: !Ref SgCommon
+            IpProtocol: udp
+            FromPort: 123
+            ToPort: 123
+            CidrIp: 0.0.0.0/0
+            Description: This rule allows vpc instances to sync with external Amazon NTP servers
+
+Outputs:
+
+    StackName:
+        Value: !Ref AWS::StackName
+
+    SgCommonId:
+        Value: !Ref SgCommon
+        Export:
+            Name: sg-common-id
+
